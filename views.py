@@ -12,10 +12,19 @@ def index(request):
     return HttpResponse(template.render(context, request))
 
 def detail(request, question_id):
-    return HttpResponse("You're looking at question %s." % question_id)
+    # django offers a function: `get_object_or_404()` because the following 
+    # try except sequence is a common idiom
+    try:
+        question = Question.objects.get(pk=question_id)
+    except Question.DoesNotExist:
+        raise Http404("Question does not exist")
+    template = loader.get_template("polls/detail.html")
+    context = {"question": question}
+    return HttpResponse(template.render(context, request))
 
 def results(request, question_id):
     response = "You're looking at the results of question %s"
+
     return HttpResponse(response % question_id)
 
 def vote(request, question_id):
