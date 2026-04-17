@@ -4,27 +4,19 @@ from django.template import loader
 from .models import Question
 
 # Create your views here.
+class IndexView(generic.ListView):
+    template_name = "polls/index.html"
+    context_object_name = "lastest_question_list"
+    def get_queryset(self):
+        return Question.objects.order_by("-pub_date")[:5]
 
-def index(request):
-    latest_question_list = Question.objects.order_by("-pub_date")[:5]
-    template = loader.get_template("polls/index.html")
-    context = {"latest_question_list": latest_question_list}
-    return HttpResponse(template.render(context, request))
+class DetailView(generic.DetailView):
+    model = Question
+    template_name = "polls/detail.html"
 
-def detail(request, question_id):
-    # django offers a function: `get_object_or_404()` because the following 
-    # try except sequence is a common idiom
-    try:
-        question = Question.objects.get(pk=question_id)
-    except Question.DoesNotExist:
-        raise Http404("Question does not exist")
-    template = loader.get_template("polls/detail.html")
-    context = {"question": question}
-    return HttpResponse(template.render(context, request))
-
-def results(request, question_id):
-    question = get_object_or_404(Question, pk=question_id)
-    return render(request, "polls/results.html", {"question": question})
+class ResultsView(generic.DetailView):
+    model = Question
+    template_name = "polls/results.html"
 
 def vote(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
