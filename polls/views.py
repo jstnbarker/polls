@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, Http404
 from django.template import loader
 from .models import Question
+from django.views import generic
 
 # Create your views here.
 class IndexView(generic.ListView):
