@@ -1,0 +1,1 @@
+Following Django polls tutorial
