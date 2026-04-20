@@ -3,7 +3,7 @@ from django.http import HttpResponse, Http404
 from django.template import loader
 from .models import Question
 from django.views import generic
-form django.utils import timezone
+from django.utils import timezone
 
 # Create your views here.
 class IndexView(generic.ListView):
